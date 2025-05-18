@@ -7,4 +7,5 @@ Kodland project about global_warming.
 
 
 
-## using: Python3, Google teachable Machine, PyTelebot.
+## using: 
+Python3, Google teachable Machine, PyTelebot.
