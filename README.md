@@ -5,7 +5,7 @@ I suppose the name of project will be 'VS:GB' kinda 'Versus global warming'.
 
 ## project idea: 
 1. help users with solving the global warming problems.
-2. tell users how to save or planet from the global_warming.
+2. tell users how to save our planet from the global warming.
 3. make users intereseted in the Earth condition.
 
 
