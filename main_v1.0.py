@@ -10,9 +10,16 @@ import config  # Файл с конфигурационными данными (
 # Инициализация бота
 bot = telebot.TeleBot(config.TOKEN)
 
-progress = 0
 
-# handle /start
+with open("progress.txt", 'r') as f:
+    number_from_txt = f.read()
+
+
+number_from_txt = int(number_from_txt)
+progress = number_from_txt
+
+
+
 @bot.message_handler(commands=['start'])
 def send_start(message):
     start_text = f"""
@@ -35,8 +42,10 @@ def send_help_message(message):
 /task - Ежедневные задания
 /materials - Образовательные материалы
 /done - Отметка выполненного задания
+/progress - Просмотр своего прогресса
 """ 
     bot.send_message(message.chat.id, help_text)
+
 
 
 @bot.message_handler(commands=['task'])
@@ -60,13 +69,13 @@ def send_random_task(message):
     markup.add(button)  # Добавляем кнопку в клавиатуру
     
     today_task = random.choice(tasks_list)
-    bot.send_message(message.chat.id, "(:!ЗАДАНИЕ НА ДЕНЬ!:)\n\n" + today_task + "\n\nИменно так ты поможешь человечеству справиться с проблемой глобального потепления", reply_markup=markup)
+    bot.send_message(message.chat.id, "(:!ЗАДАНИЕ НА ДЕНЬ!:)\n\n" + today_task + "\n\nИменно так ты поможешь человечеству справиться с проблемой глобального потепления😊", reply_markup=markup)
 
 
 
 @bot.message_handler(commands=['materials'])
 def send_materials(message):
-    pre_materials_text = "Ниже в сообщении будет несколько интересных статей о глобальном потеплении! Уверен, что ты не пожалеешь, если ознакомишься!\n\n!Welcome!"
+    pre_materials_text = "Ниже в сообщении будет несколько интересных статей о глобальном потеплении! Уверен, что ты не пожалеешь, если ознакомишься!😉\n\n!Welcome!"
     materials_text = """
 1. NASA – Climate Change: Vital Signs of the Planet
 🔗 https://climate.nasa.gov/
@@ -99,6 +108,7 @@ def send_materials(message):
     bot.send_message(message.chat.id, materials_text)
 
 
+
 @bot.callback_query_handler(func=lambda call: True)
 def handle_button_click(call):
     global today_task
@@ -111,7 +121,7 @@ def handle_button_click(call):
         bot.edit_message_text(
             chat_id=call.message.chat.id,
             message_id=call.message.message_id,
-            text= today_task + "\n\nУверен, что у тебя все получится!!!",
+            text= today_task + "\n\nУверен, что у тебя все получится!!!💪",
             reply_markup=None  # Убираем клавиатуру после нажатия
         )
 
@@ -121,7 +131,35 @@ def handle_button_click(call):
 def mark_done_task(message): 
     global progress
     progress += 1
-    bot.send_message(message.chat.id, "ВЫ выполнили задание! ВЫ огромный молодей!\n Вы продвигаетесь в своей линии прогресса на целую единицу!" +  "\n\nВаш прогресс: " + str(progress))
+    with open("progress.txt", "w") as f:
+        f.write(str(progress))
+    bot.send_message(message.chat.id, "ВЫ выполнили задание! ВЫ огромный молодец!\nВы продвигаетесь в своей линии прогресса на целую единицу!📈" +  "\n\nВаш прогресс: " + str(progress) + "😺")
+
+
+
+@bot.message_handler(commands=['progress', 'statistics'])
+def show_progress(message):
+    global progress
+    good_words_list = ["Мы одобряем твою инициативу помогать планете)❤️", "Продолжай в том же духе!)❤️", "Теряю равновесие от твоей экологичности!❤️", "Такими темпами ты останешься в истории планеты!❤️", "🤩ЛЕГЕНДА🤩"]
+    if progress <= 49:
+        good_words = good_words_list[progress % 10]
+    else:
+        good_words = good_words_list[-1]
+    bot.send_message(message.chat.id, "На данный момент ваш прогресс составляет " + str(progress) + "🤯\n\nТы крут!" + f"\n\n{good_words}😎")
+
+
+@bot.message_handler(commands=["about"])
+def send_about(message): 
+    about_message = """
+Добро пожаловать в бота VS:GW!😉
+
+Автор текстов: Литовченко Максим⌨️
+Автор дизайна: Литовченко Максим✏️
+Разработка: Литовченко Максим🧐
+"""
+    
+    bot.send_message(message.chat.id, about_message)
+
 
 
 
