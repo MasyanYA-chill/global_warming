@@ -1,6 +1,6 @@
 ## description:
 Kodland project about global_warming.
-I suppose the name of project will be 'VS:GB' kinda 'Versus global warming'.
+I suppose the name of project will be 'VS:GW' kinda 'Versus global warming'.
 
 
 ## project idea: 
@@ -16,7 +16,7 @@ I will write main template in my own, but my last telebot project will be a clue
 
 
 ## using libraries: 
-Python3, Google teachable Machine, PyTelebot.
+Python3, PyTelebot, Random.
 
 
 
